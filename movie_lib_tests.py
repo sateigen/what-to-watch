@@ -1,6 +1,8 @@
 from movie import Movie
 from rating import Rating
 from user import User
+from recommendations import *
+
 
 rating_data_1 = [['196', '242', '3', '881250949'], ['186', '302', '3', '891717742'], ['22', '377', '1', '878887116'], ['209', '242', '4', '883589606'], ['35', '242', '2', '875459166'], ['196', '393', '4', '881251863'], ['196', '381', '4', '881251728'], ['196', '251', '3', '881251274'], ['305', '451', '3', '886324817'], ['6', '86', '3', '883603013']]
 rating_objects = [Rating(x) for x in rating_data_1]
@@ -60,3 +62,7 @@ def test_finding_all_ratings_by_user_id():
 
 def test_finding_average_ratings():
     assert Rating.find_average_ratings(242, ratings) == 3.0
+
+def test_get_scaled_list_returns_list_with_only_movies_rated_number_of_times():
+    new_list = scale_movies(ratings, 3)
+    assert new_list == [242]
