@@ -2,9 +2,17 @@ from movie import Movie
 from rating import Rating
 from user import User
 
+rating_data_1 = [['196', '242', '3', '881250949'], ['186', '302', '3', '891717742'], ['22', '377', '1', '878887116'], ['209', '242', '4', '883589606'], ['35', '242', '2', '875459166'], ['196', '393', '4', '881251863'], ['196', '381', '4', '881251728'], ['196', '251', '3', '881251274'], ['305', '451', '3', '886324817'], ['6', '86', '3', '883603013']]
+rating_objects = [Rating(x) for x in rating_data_1]
+ratings = {}
+for rating in rating_objects:
+    if rating.movie_id not in ratings:
+        ratings[int(rating.movie_id)] = [int(rating.rating)]
+    else:
+        ratings[int(rating.movie_id)].append(int(rating.rating))
+
 
 def test_rating_class_initiation():
-    rating_data_1 = [['196', '242', '3', '881250949'], ['186', '302', '3', '891717742'], ['22', '377', '1', '878887116'], ['244', '51', '2', '880606923'], ['166', '346', '1', '886397596'], ['298', '474', '4', '884182806'], ['115', '265', '2', '881171488'], ['253', '465', '5', '891628467'], ['305', '451', '3', '886324817'], ['6', '86', '3', '883603013']]
     rating1 = Rating(rating_data_1[0])
 
     assert rating1.user_id == 196
@@ -40,3 +48,15 @@ def test_get_name_method_in_movie_class():
     movie_objects = [Movie(movie) for movie in movie_data_1]
 
     assert Movie.get_movie_name(1, movie_objects) == 'Toy Story (1995)'
+
+
+def test_finding_all_ratings_by_movie_id():
+    assert Rating.find_all_ratings_by_movie(242, rating_objects) == [3, 4, 2]
+
+
+def test_finding_all_ratings_by_user_id():
+    assert Rating.find_all_ratings_by_user(196, rating_objects) == [3, 4, 4, 3]
+
+
+def test_finding_average_ratings():
+    assert Rating.find_average_ratings(242, ratings) == 3.0
